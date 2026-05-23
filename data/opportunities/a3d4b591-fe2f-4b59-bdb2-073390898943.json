@@ -1,0 +1,83 @@
+{
+  "id": "a3d4b591-fe2f-4b59-bdb2-073390898943",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "ecbf6156-e7cd-4f47-b360-0e0f123e3ee2",
+  "problem_statement": "Experienced ICs mentally pattern-match new projects to past ones and reuse configuration approaches, but this institutional knowledge is not documented. Newer ICs like Sara have no access to it and must read every project from scratch, slowing ramp-up and increasing error risk.",
+  "ai_solution_concept": "An LLM could analyse completed Rocketlane projects and Confluence playbooks to generate scenario-specific guidance (e.g. 'DACH customer migrating from Sage HR with custom seniority calculation') by retrieving and synthesising past project patterns.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "The playbook gap affects roughly 15% of projects (the 'actual situation about 15% of the time' for complex DACH/Sage HR scenarios), and Sara as a new IC reads every project from scratch, suggesting a meaningful but not majority slice of volume is affected.",
+            "evidence_quote": "what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation. Which is the actual situation about 15% of the time."
+          },
+          {
+            "name": "hours_saved",
+            "score": 2,
+            "rationale": "The transcript describes Sara reading every project from scratch and Lena doing mental pattern-matching, but does not quantify hours lost specifically to the playbook gap; the bulk of the documented time cost (3–4 hours per customer) is attributed to the handoff synthesis problem, not the institutional knowledge gap.",
+            "evidence_quote": "Sara, who just joined the team six weeks ago, has none of that. She's reading every project from scratch."
+          },
+          {
+            "name": "customer_friction",
+            "score": 4,
+            "rationale": "Delayed go-lives tied to poor kickoffs slip by an average of 6.5 weeks and correlate with 2.1x higher first-year churn, indicating the downstream customer impact of knowledge gaps is major and directly tied to retention conversations.",
+            "evidence_quote": "Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 3,
+            "rationale": "Completed Rocketlane projects and Confluence playbooks exist and are referenced as the input sources, but the playbooks are described as generic and the project-specific institutional knowledge lives in people's heads rather than in clean structured form, requiring meaningful extraction and synthesis work.",
+            "evidence_quote": "our Confluence has playbooks, but they're generic. 'How to set up Personio Payroll.' Not, 'what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.'"
+          },
+          {
+            "name": "llm_capability",
+            "score": 3,
+            "rationale": "Retrieving and synthesising past project patterns to generate scenario-specific guidance is within LLM capability (RAG over structured project data), but requires careful prompt engineering and schema design to reliably match new scenarios to historical analogues rather than producing generic output.",
+            "evidence_quote": "this looks like the Hamburg dental group from last summer, I should reuse that DATEV configuration approach. But that knowledge lives in her head."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The Rocketlane project structure and Confluence playbook system appear to be established and stable, but the institutional knowledge is undocumented and the playbooks are acknowledged as incomplete, meaning the process exists but is not well-instrumented for AI ingestion.",
+            "evidence_quote": "When Lena starts a new project, she's pattern-matching mentally — 'this looks like the Hamburg dental group from last summer, I should reuse that DATEV configuration approach.' But that knowledge lives in her head."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 2,
+            "rationale": "Building a RAG system that analyses completed Rocketlane projects and Confluence playbooks to generate scenario-specific guidance requires meaningful engineering: data pipeline from multiple sources, embedding and retrieval infrastructure, and prompt tuning — likely a quarter-plus build rather than a quick integration.",
+            "evidence_quote": "An LLM could analyse completed Rocketlane projects and Confluence playbooks to generate scenario-specific guidance"
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "The trigger is per new project assignment (not a high-frequency real-time stream), and the retrieval and synthesis task per project is bounded in scope; API costs at this volume would likely remain well under $200/month.",
+            "evidence_quote": "An IC is assigned based on country, language, and capacity. Slack notification fires to the IC. That's the automated handoff."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "As new project patterns emerge and playbooks evolve, the retrieval corpus and prompts will need periodic updates; this is moderate ongoing maintenance — not negligible, but manageable with occasional prompt and index refresh rather than a dedicated ops function.",
+            "evidence_quote": "our Confluence has playbooks, but they're generic... Not, 'what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.' Which is the actual situation about 15% of the time."
+          }
+        ]
+      }
+    },
+    "composite": 3
+  },
+  "created_at": "2026-05-23T20:05:44.348Z"
+}

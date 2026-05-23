@@ -1,0 +1,83 @@
+{
+  "id": "b125a578-b3c6-4205-b1a3-5934029256b6",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "708856a1-7295-42b5-af95-fa2ff86eee5f",
+  "problem_statement": "Macros for Romance-language and Dutch customers are outdated copies that haven't been refreshed in over a year, and at least one English/German macro still references a UI element that no longer exists, causing customer confusion.",
+  "ai_solution_concept": "An LLM can compare macro content against current help-centre articles or UI change logs to flag stale instructions for human review, enabling proactive macro hygiene.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 2.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "Romance-language and Dutch tickets represent the 'rest' beyond the 60% German and 30% English, so roughly 10% of ~2,100 weekly tickets (~210/week). This is a meaningful but not dominant slice of volume, fitting the 'material' anchor of 10–25% (on the lower end).",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "hours_saved",
+            "score": 2,
+            "rationale": "The stale macro problem affects a subset of the ~45% recurring-pattern tickets, but only for the Romance-language/Dutch queue which is a small fraction of total volume. The transcript does not quantify agent-hours lost to stale macros specifically, suggesting a minor rather than material time cost.",
+            "evidence_quote": "Roughly 45% of Tier 1 tickets are recurring patterns. Resetting employee passwords, re-sending mobile app invites... We have macros for most of them, in English and German. The Romance-language and Dutch macros are usually translated copies that haven't been updated in a year."
+          },
+          {
+            "name": "customer_friction",
+            "score": 3,
+            "rationale": "The transcript explicitly describes customer confusion caused by stale macros referencing UI elements that no longer exist, and a 'steady drip of escalations' tied to mismatched instructions — indicating a recurring, noticeable source of customer pain beyond mere annoyance.",
+            "evidence_quote": "The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 3,
+            "rationale": "Help-centre articles exist and macros are in Zendesk, but the transcript notes articles are 'uneven in non-English languages' and there is no mention of structured UI change logs being readily available, requiring some effort to assemble the comparison inputs.",
+            "evidence_quote": "Fin's answers are only as good as the help-centre articles, and those are uneven in non-English languages."
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Comparing macro text against help-centre articles or UI change logs to flag discrepancies is a textbook LLM strength — semantic comparison, extraction, and classification — well within current model capability with a careful prompt.",
+            "evidence_quote": "We still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The macro drift problem is described as ongoing and chronic rather than a one-off, but the underlying UI and help-centre content changes frequently (e.g. November UI change still unaddressed), meaning the process the AI integrates into is somewhat unstable and would require periodic re-runs rather than a fully static pipeline.",
+            "evidence_quote": "Macros drift constantly. The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The solution is primarily a comparison and flagging task — fetch macro content, fetch help-centre articles, run an LLM diff, surface flags for human review. This is largely integration and prompt work, estimable at one to two weeks of engineering effort.",
+            "evidence_quote": "An LLM can compare macro content against current help-centre articles or UI change logs to flag stale instructions for human review, enabling proactive macro hygiene."
+          },
+          {
+            "name": "api_cost",
+            "score": 5,
+            "rationale": "Macro hygiene is a batch, low-frequency task (run periodically, not on every ticket). The corpus of macros is small relative to ticket volume, so LLM API spend would be negligible — well under $200/month.",
+            "evidence_quote": "The Romance-language and Dutch macros are usually translated copies that haven't been updated in a year."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 4,
+            "rationale": "Once the prompt is tuned to compare macro instructions against article content, maintenance is primarily re-running the job after UI or product changes. No complex retraining or eval pipeline is needed; occasional prompt tweaks as the product evolves would suffice.",
+            "evidence_quote": "Macros drift constantly. The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      }
+    },
+    "composite": 3.2333333333333334
+  },
+  "created_at": "2026-05-23T19:42:33.033Z"
+}

@@ -1,0 +1,130 @@
+{
+  "id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "title": "Sales → Implementation Consultant Handoff — Discovery Session",
+  "source": "paste",
+  "ingested_at": "2026-05-23T20:04:52.181Z",
+  "raw_text": "**Devon:** This handoff is where a lot of our slipped go-lives originate. Let me frame it. An AE closes a deal in Salesforce — say a Professional-tier annual contract for a 300-employee DACH manufacturer with Personio Payroll, time tracking, and a DATEV export requirement. The AE has been on this account for maybe three months. They know the HR director, they probably know which legacy HRIS we're replacing, they know the customer wants to be live for the July payroll run.\n\n**Lena:** And almost none of that gets to me in usable form.\n\n**Devon:** Right. So the AE marks Closed Won. Our Zap pushes the account into Rocketlane and creates a project skeleton. An IC is assigned based on country, language, and capacity. Slack notification fires to the IC. That's the automated handoff.\n\n**Rachel:** There's also the \"Implementation Brief\" template the AE is supposed to fill in before Closed Won — twenty-two fields. Countries in scope, employee count per country, payroll provider being replaced, integration list, target go-live date, who the project sponsor is on the customer side, anything non-standard in the contract.\n\n**Lena:** \"Supposed to.\"\n\n**Rachel:** Yeah. Completion rate is 38%. Of the completed ones, maybe half are usable — the rest are one-word answers, \"see attached proposal,\" or copy-paste from the sales deck.\n\n**Alex:** *(side note)* Classic handoff data-quality problem. Need to probe what info exists *elsewhere* if not in the brief.\n\n**Lena:** The information exists. It's just scattered. There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop. I can find it all, but it takes me three to four hours per new customer to reconstruct what the AE already knew.\n\n**Devon:** And we have a 5-business-day SLA from Closed Won to kickoff call. Lena spends half a day mining Gong and Drive, then another half day building the kickoff agenda and the Rocketlane project plan, on top of her existing portfolio of 11 active implementations.\n\n**Lena:** The painful part — about 25% of the time I get on the kickoff call and the customer says something like, \"Right, so we specifically bought this because we need it to integrate with our existing Slack and our learning platform — what's the timeline for those?\" And I'm hearing it for the first time. It is *definitely* in a Gong call somewhere. The AE absolutely heard it. But it never made the brief.\n\n**Rachel:** We talked about hiring a \"handoff specialist\" whose only job is to pre-digest the artefacts for ICs. €85k loaded cost per head and we'd need at least three to cover the volume.\n\n**Devon:** *(side note while reading)* What about a 30-min handoff call AE-to-IC for every Closed Won?\n\n**Lena:** We tried that in 2024. AEs hated it — quota's quota, they're chasing the next deal. They'd show up unprepared and we'd get the same shallow summary twice. Calendar lag was four days average. Bigger deals got priority, smaller ones got skipped. Killed it after a quarter.\n\n**Alex:** *(side note)* The bottleneck is synthesis of artefacts the company already paid to produce. LLM-shaped problem.\n\n**Devon:** There's a downstream piece too. Implementation playbooks. When Lena starts a new project, she's pattern-matching mentally — \"this looks like the Hamburg dental group from last summer, I should reuse that DATEV configuration approach.\" But that knowledge lives in her head. Sara, who just joined the team six weeks ago, has none of that. She's reading every project from scratch.\n\n**Lena:** And our Confluence has playbooks, but they're generic. \"How to set up Personio Payroll.\" Not, \"what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.\" Which is the actual situation about 15% of the time.\n\n**Devon:** Bad kickoffs correlate strongly with delayed go-lives. We measured it last quarter. When the kickoff is rated \"unprepared\" by the customer in our post-call survey, the go-live slips on average 6.5 weeks. When the kickoff is rated \"well-prepared,\" average slip is 1.2 weeks.\n\n**Rachel:** And delayed go-lives correlate with first-year churn. Pulled the numbers in November. Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days.\n\n**Lena:** Which is heartbreaking, because the customer didn't do anything wrong. We just couldn't get our act together internally to read the calls they were on.",
+  "supplemental_context": "- Implementation Consultant team: 34 ICs across EMEA. DACH segment is biggest (16 ICs); UK & Ireland 6; Iberia 5; Benelux 4; France 3.\n- Deal flow: ~75 new implementations/month across all segments and tiers.\n- Tools: Salesforce (CRM), Rocketlane (PS platform — project plans, customer-facing tasks, time tracking), Gong (call recording, transcripts, AI summaries — internal Gong product, not our own LLM), Google Workspace, Notion (internal docs), Slack, Confluence (implementation playbooks).\n- Gong has 6–12 calls per deal with auto-transcripts in source language and English. SE scoping decks are usually attached.\n- Rocketlane has a structured \"Implementation Brief\" form at project creation, identical to the Salesforce template. Same low completion rate.\n- Standard implementation phases for a typical DACH customer: Discovery → HR Core setup → Payroll setup (if applicable) → Integrations (DATEV, Slack/Teams, SSO/SCIM) → Training → Go-Live → Hypercare. Each phase has its own playbook in Confluence.\n- DATEV integration is by far the most variable phase. Customer-side DATEV setups range from greenfield to 15 years of accumulated quirks.\n- No LLM tooling in the handoff or playbook reuse process today. ICs occasionally use ChatGPT personally for ad-hoc questions but it's not sanctioned for customer data.\n- Leadership goal: cut average DACH time-to-go-live from 14 weeks to 10 weeks by year-end without adding headcount.",
+  "workflow": {
+    "stages": [
+      {
+        "name": "Deal close and automated project creation",
+        "description": "The AE marks the deal Closed Won in Salesforce, triggering a Zapier automation that creates a project skeleton in Rocketlane and sends a Slack notification to the assigned Implementation Consultant. IC assignment is based on country, language, and capacity.",
+        "actors": [
+          "Account Executive",
+          "Salesforce",
+          "Zapier",
+          "Rocketlane",
+          "Slack"
+        ]
+      },
+      {
+        "name": "Implementation Brief completion (pre-handoff)",
+        "description": "The AE is expected to complete a 22-field Implementation Brief in Salesforce before Closed Won, covering scope, employee counts, integrations, target go-live date, and contract non-standards. In practice only 38% are submitted and roughly half of those are usable.",
+        "actors": [
+          "Account Executive",
+          "Salesforce",
+          "Solutions Engineer"
+        ]
+      },
+      {
+        "name": "IC artefact excavation and context reconstruction",
+        "description": "The assigned IC spends three to four hours manually hunting across Gong recordings, Outlook email threads, Google Drive proposals, SE scoping decks, Looms, and Notion pages to reconstruct deal context that was never captured in the brief. This consumes roughly half a business day of the 5-day SLA window to kickoff.",
+        "actors": [
+          "Implementation Consultant",
+          "Gong",
+          "Google Drive",
+          "Outlook",
+          "Notion"
+        ]
+      },
+      {
+        "name": "Kickoff preparation and project planning",
+        "description": "The IC builds the kickoff call agenda and populates the Rocketlane project plan based on the context reconstructed in the previous stage, pattern-matching against prior similar implementations from memory. Newer ICs lack this institutional knowledge and must read every project from scratch.",
+        "actors": [
+          "Implementation Consultant",
+          "Rocketlane",
+          "Confluence"
+        ]
+      },
+      {
+        "name": "Customer kickoff call",
+        "description": "The IC conducts the kickoff call with the customer within the 5-business-day SLA. When artefact excavation was incomplete, the IC may learn critical requirements (e.g. undisclosed integrations) for the first time on this call. Customer post-call survey ratings of 'unprepared' correlate with an average 6.5-week go-live slip.",
+        "actors": [
+          "Implementation Consultant",
+          "Customer (HR Director / Project Sponsor)",
+          "Rocketlane"
+        ]
+      },
+      {
+        "name": "Phased implementation execution",
+        "description": "The IC executes the standard implementation phases — HR Core setup, Payroll setup, Integrations (DATEV, Slack/Teams, SSO/SCIM), Training, and Go-Live — using generic Confluence playbooks that do not capture edge-case patterns such as complex DATEV configurations or migrations from specific legacy HRIS platforms.",
+        "actors": [
+          "Implementation Consultant",
+          "Customer",
+          "Rocketlane",
+          "Confluence"
+        ]
+      },
+      {
+        "name": "Go-Live and Hypercare",
+        "description": "The customer goes live on Personio Payroll; the IC provides a structured hypercare period. Projects that slipped more than 30 days past the original go-live date show 2.1x higher first-year churn, making on-time delivery a direct retention lever.",
+        "actors": [
+          "Implementation Consultant",
+          "Customer",
+          "Rocketlane"
+        ]
+      }
+    ]
+  },
+  "bottlenecks": [
+    {
+      "id": "d2da1cba-5e26-461c-8ed6-60109c17d767",
+      "stage": "Sales-to-Implementation Handoff — Implementation Brief Completion",
+      "description": "The 22-field Implementation Brief that AEs are required to complete before Closed Won has only a 38% completion rate, and of those completed, roughly half are unusable due to shallow or copy-pasted content. This means ICs start projects without the structured context they need.",
+      "evidence_quote": "Completion rate is 38%. Of the completed ones, maybe half are usable — the rest are one-word answers, \"see attached proposal,\" or copy-paste from the sales deck.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM could auto-draft the Implementation Brief by extracting structured fields (employee count, integrations, go-live date, payroll provider) from Gong transcripts, email threads, and the SE scoping deck, reducing reliance on AE manual entry."
+    },
+    {
+      "id": "4d0f8ff3-b7a7-40fa-b9e9-17baa41269ec",
+      "stage": "Sales-to-Implementation Handoff — Artefact Synthesis",
+      "description": "ICs spend three to four hours per new customer manually reconstructing deal context scattered across Gong recordings, Outlook email threads, Google Drive proposals, SE scoping decks, and Notion pages. This consumes a significant portion of the 5-business-day kickoff SLA.",
+      "evidence_quote": "The information exists. It's just scattered. There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop. I can find it all, but it takes me three to four hours per new customer to reconstruct what the AE already knew.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM is well-suited to ingest multi-source artefacts — Gong transcripts, Drive documents, Notion pages — and synthesise a structured deal summary, which is a classic multi-document extraction and summarisation task."
+    },
+    {
+      "id": "11585efc-8775-4a2c-a5ed-6a24b2165e57",
+      "stage": "Kickoff Call Preparation — Missing Customer Requirements",
+      "description": "Approximately 25% of the time, ICs learn critical customer requirements (such as specific integration needs) for the first time on the kickoff call itself, because those details were captured in Gong calls but never surfaced to the IC. This directly correlates with an average go-live slip of 6.5 weeks.",
+      "evidence_quote": "The painful part — about 25% of the time I get on the kickoff call and the customer says something like, \"Right, so we specifically bought this because we need it to integrate with our existing Slack and our learning platform — what's the timeline for those?\" And I'm hearing it for the first time. It is *definitely* in a Gong call somewhere. The AE absolutely heard it. But it never made the brief.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM could scan all Gong transcripts for a deal and flag customer-stated requirements, commitments, and open questions, ensuring nothing buried in a sales call is missed before the kickoff."
+    },
+    {
+      "id": "ecbf6156-e7cd-4f47-b360-0e0f123e3ee2",
+      "stage": "Implementation Playbook Reuse — Tacit Knowledge Trapped in Senior ICs",
+      "description": "Experienced ICs mentally pattern-match new projects to past ones and reuse configuration approaches, but this institutional knowledge is not documented. Newer ICs like Sara have no access to it and must read every project from scratch, slowing ramp-up and increasing error risk.",
+      "evidence_quote": "Implementation playbooks. When Lena starts a new project, she's pattern-matching mentally — \"this looks like the Hamburg dental group from last summer, I should reuse that DATEV configuration approach.\" But that knowledge lives in her head. Sara, who just joined the team six weeks ago, has none of that. She's reading every project from scratch.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM could analyse completed Rocketlane projects and Confluence playbooks to generate scenario-specific guidance (e.g. 'DACH customer migrating from Sage HR with custom seniority calculation') by retrieving and synthesising past project patterns."
+    },
+    {
+      "id": "2a233ed4-64e0-41da-a109-ae34cebf4854",
+      "stage": "Implementation Playbook Reuse — Generic Confluence Content",
+      "description": "Confluence playbooks cover standard Personio setup steps but do not address the complex, scenario-specific configurations that occur in roughly 15% of implementations, leaving ICs without documented guidance for the cases that are hardest to get right.",
+      "evidence_quote": "our Confluence has playbooks, but they're generic. \"How to set up Personio Payroll.\" Not, \"what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.\" Which is the actual situation about 15% of the time.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM with retrieval-augmented generation over completed project artefacts and Gong calls could surface contextually relevant past solutions and draft scenario-specific playbook additions, supplementing the generic Confluence content."
+    },
+    {
+      "id": "1084c121-40e8-4168-b530-090a908b6731",
+      "stage": "Sales-to-Implementation Handoff — AE Synchronous Handoff Call",
+      "description": "A mandatory 30-minute handoff call between AE and IC was trialled in 2024 but abandoned after one quarter because AEs arrived unprepared, scheduling lag averaged four days, smaller deals were deprioritised, and the format produced the same shallow summaries the brief already failed to deliver.",
+      "evidence_quote": "We tried that in 2024. AEs hated it — quota's quota, they're chasing the next deal. They'd show up unprepared and we'd get the same shallow summary twice. Calendar lag was four days average. Bigger deals got priority, smaller ones got skipped. Killed it after a quarter.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "Replacing the synchronous handoff call with an LLM-generated deal summary that requires only AE review and confirmation rather than live attendance could eliminate the scheduling lag and preparation burden that caused the trial to fail."
+    }
+  ]
+}

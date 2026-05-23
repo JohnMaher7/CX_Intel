@@ -1,0 +1,83 @@
+{
+  "id": "9c43b815-de4f-43e2-a96a-1052c5592629",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "1084c121-40e8-4168-b530-090a908b6731",
+  "problem_statement": "A mandatory 30-minute handoff call between AE and IC was trialled in 2024 but abandoned after one quarter because AEs arrived unprepared, scheduling lag averaged four days, smaller deals were deprioritised, and the format produced the same shallow summaries the brief already failed to deliver.",
+  "ai_solution_concept": "Replacing the synchronous handoff call with an LLM-generated deal summary that requires only AE review and confirmation rather than live attendance could eliminate the scheduling lag and preparation burden that caused the trial to fail.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 4,
+            "rationale": "The bottleneck fires on every Closed Won deal and the IC team is running 11+ active implementations per person, suggesting a large and continuous volume. The transcript doesn't give an exact ticket count but the scale implies 25–50%+ of all onboarding activity is affected.",
+            "evidence_quote": "An IC is assigned based on country, language, and capacity. Slack notification fires to the IC. That's the automated handoff."
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Each new deal costs the IC 3–4 hours of artefact mining, plus additional time building the kickoff agenda and Rocketlane plan — well into the 50+ agent-hours per week territory across the team given the volume described.",
+            "evidence_quote": "Lena spends half a day mining Gong and Drive, then another half day building the kickoff agenda and the Rocketlane project plan, on top of her existing portfolio of 11 active implementations."
+          },
+          {
+            "name": "customer_friction",
+            "score": 5,
+            "rationale": "The transcript directly ties poor handoffs to 6.5-week go-live slips and 2.1x first-year churn, placing this squarely in the 'directly tied to churn' anchor for a score of 5.",
+            "evidence_quote": "Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 3,
+            "rationale": "The required inputs exist (Gong transcripts, emails, proposals, SE decks, Notion pages) but are scattered across multiple systems and not in a single clean structured form, requiring integration work to aggregate before the LLM can synthesise them.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop."
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Synthesising and summarising information from transcripts, emails, and documents into a structured deal brief is a textbook LLM strength — classification, extraction, and summarisation — well within current model capability with a careful prompt and schema.",
+            "evidence_quote": "The bottleneck is synthesis of artefacts the company already paid to produce. LLM-shaped problem."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The downstream process (Rocketlane project creation, IC assignment, kickoff call) is documented and automated via Zapier, but the upstream data sources are inconsistent and the brief completion rate is only 38%, indicating the process is stable in structure but unreliable in practice.",
+            "evidence_quote": "Completion rate is 38%. Of the completed ones, maybe half are usable — the rest are one-word answers, \"see attached proposal,\" or copy-paste from the sales deck."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 2,
+            "rationale": "Integrating across Gong, Outlook, Google Drive, Rocketlane, and potentially Notion/Loom to pull artefacts per deal before passing to an LLM is a multi-system integration project likely requiring several weeks to a quarter of engineering effort, placing this above a simple single-source build.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup."
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "Summarising 6–12 call transcripts plus a handful of documents per deal is a moderate token load, but deal volume is unlikely to be in the thousands per month, keeping API spend well below $1k/mo and likely in the low hundreds.",
+            "evidence_quote": "six to twelve Gong recordings per deal with auto-transcripts"
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "The prompt will need periodic tuning as deal types, integration requirements, and playbook patterns evolve (e.g. new DATEV configurations, new HRIS migrations), and the AE review step adds a lightweight human-in-the-loop that helps catch drift but still requires occasional prompt updates.",
+            "evidence_quote": "what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation. Which is the actual situation about 15% of the time."
+          }
+        ]
+      }
+    },
+    "composite": 3.716666666666667
+  },
+  "created_at": "2026-05-23T20:05:44.350Z"
+}

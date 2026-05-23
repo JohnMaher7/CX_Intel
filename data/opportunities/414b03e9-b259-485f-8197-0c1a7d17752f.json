@@ -1,0 +1,83 @@
+{
+  "id": "414b03e9-b259-485f-8197-0c1a7d17752f",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "d2da1cba-5e26-461c-8ed6-60109c17d767",
+  "problem_statement": "The 22-field Implementation Brief that AEs are required to complete before Closed Won has only a 38% completion rate, and of those completed, roughly half are unusable due to shallow or copy-pasted content. This means ICs start projects without the structured context they need.",
+  "ai_solution_concept": "An LLM could auto-draft the Implementation Brief by extracting structured fields (employee count, integrations, go-live date, payroll provider) from Gong transcripts, email threads, and the SE scoping deck, reducing reliance on AE manual entry.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 4,
+            "rationale": "The brief completion problem affects every Closed Won deal (38% completion rate, half of those unusable), meaning the majority of new implementations start without adequate context. This is a large slice of volume — effectively every new customer onboarding is impacted.",
+            "evidence_quote": "Completion rate is 38%. Of the completed ones, maybe half are usable — the rest are one-word answers, \"see attached proposal,\" or copy-paste from the sales deck."
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Each IC spends 3–4 hours per new customer reconstructing information, and with a 5-business-day SLA and a portfolio of 11 active implementations, this represents 50+ agent-hours per week across the team — matching the 'Major' anchor.",
+            "evidence_quote": "it takes me three to four hours per new customer to reconstruct what the AE already knew."
+          },
+          {
+            "name": "customer_friction",
+            "score": 5,
+            "rationale": "Poor handoffs directly cause go-live slips averaging 6.5 weeks and 2.1x higher first-year churn, placing this firmly at the 'Critical' anchor — directly tied to churn and escalations.",
+            "evidence_quote": "Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "All required inputs already exist in the company's systems — Gong transcripts, Outlook email threads, Google Drive proposals, and SE scoping decks — making this straightforward data extraction rather than new instrumentation.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup."
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "The task is textbook LLM strength — extracting structured fields (employee count, integrations, go-live date, payroll provider) from transcripts and documents into a defined 22-field schema. This is classification and extraction, well within current LLM capability.",
+            "evidence_quote": "The bottleneck is synthesis of artefacts the company already paid to produce. LLM-shaped problem."
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The downstream process (Rocketlane project creation, IC assignment, Slack notification, 5-day SLA to kickoff) is documented and automated via Zapier, indicating a stable and instrumented workflow to integrate into.",
+            "evidence_quote": "Our Zap pushes the account into Rocketlane and creates a project skeleton. An IC is assigned based on country, language, and capacity. Slack notification fires to the IC. That's the automated handoff."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The build is primarily integration work — connecting Gong API, Outlook, and Google Drive to an LLM prompt that populates a fixed 22-field schema, then writing back to Salesforce/Rocketlane. This is a week or two of engineering, not a multi-quarter project.",
+            "evidence_quote": "An LLM could auto-draft the Implementation Brief by extracting structured fields (employee count, integrations, go-live date, payroll provider) from Gong transcripts, email threads, and the SE scoping deck"
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "Processing 6–12 Gong transcripts plus a few documents per deal at deal-close frequency is modest token volume. API spend would likely stay well under $200/month, fitting the 'Cheap' anchor.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built"
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "The 22-field schema is fixed but the underlying artefact sources (Gong, Outlook, Drive, Notion) are varied and occasionally change format. Prompt tuning will be needed as new integration types or deal structures emerge, placing this at moderate ongoing maintenance.",
+            "evidence_quote": "There might be a Notion page from a discovery workshop. I can find it all, but it takes me three to four hours per new customer to reconstruct what the AE already knew."
+          }
+        ]
+      }
+    },
+    "composite": 4.083333333333333
+  },
+  "created_at": "2026-05-23T20:05:44.331Z"
+}

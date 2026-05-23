@@ -1,0 +1,83 @@
+{
+  "id": "13a81f9d-55a5-4279-b93b-d24e0352ae8f",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "4d0f8ff3-b7a7-40fa-b9e9-17baa41269ec",
+  "problem_statement": "ICs spend three to four hours per new customer manually reconstructing deal context scattered across Gong recordings, Outlook email threads, Google Drive proposals, SE scoping decks, and Notion pages. This consumes a significant portion of the 5-business-day kickoff SLA.",
+  "ai_solution_concept": "An LLM is well-suited to ingest multi-source artefacts — Gong transcripts, Drive documents, Notion pages — and synthesise a structured deal summary, which is a classic multi-document extraction and summarisation task.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 4,
+            "rationale": "The bottleneck fires on every new customer handoff, and the transcript implies a steady volume sufficient to justify hiring three specialist headcount at €85k each. This affects a large slice of the IC workload rather than an edge case.",
+            "evidence_quote": "€85k loaded cost per head and we'd need at least three to cover the volume"
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Each new customer consumes three to four hours of IC time in manual artefact reconstruction, and the IC carries 11 active implementations simultaneously, making this a recurring major drain of 50+ agent-hours per week across the team.",
+            "evidence_quote": "it takes me three to four hours per new customer to reconstruct what the AE already knew"
+          },
+          {
+            "name": "customer_friction",
+            "score": 5,
+            "rationale": "Poor kickoffs directly correlate with 6.5-week go-live slips and 2.1x first-year churn for projects delayed more than 30 days — this is explicitly tied to retention and described as heartbreaking by the IC.",
+            "evidence_quote": "Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days"
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 3,
+            "rationale": "The artefacts exist and are findable — Gong transcripts, Outlook threads, Google Drive proposals, SE scoping decks, Notion pages — but they are scattered across multiple systems with no single clean feed, requiring integration work across at least five sources.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop."
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Multi-document extraction and summarisation into a structured deal brief is a textbook LLM strength. The task is well-defined — extract key facts like go-live date, integrations, payroll provider, sponsor — and does not require long-horizon agentic reasoning.",
+            "evidence_quote": "The bottleneck is synthesis of artefacts the company already paid to produce. LLM-shaped problem."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The downstream process (Rocketlane project creation, IC assignment, kickoff SLA) is documented and automated via Zapier, but the upstream data sources are inconsistent and the Implementation Brief completion rate is only 38%, indicating the process around data capture is unstable.",
+            "evidence_quote": "Completion rate is 38%. Of the completed ones, maybe half are usable — the rest are one-word answers, \"see attached proposal,\" or copy-paste from the sales deck."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 2,
+            "rationale": "Ingesting and connecting five distinct systems (Gong, Outlook, Google Drive, Notion, Rocketlane) requires meaningful integration engineering across multiple APIs, likely a quarter-plus of build effort rather than a quick weekend project.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop."
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "Each deal summary is a one-time summarisation of a bounded set of documents per new customer. Even at high deal volume, per-run LLM token costs for summarisation tasks are low, likely well under $200/month.",
+            "evidence_quote": "it takes me three to four hours per new customer to reconstruct what the AE already knew"
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "The prompt schema will need to evolve as deal types, integration requirements, and playbook patterns change (e.g. new DATEV configurations, new HRIS migrations), requiring occasional prompt and schema updates from a named owner.",
+            "evidence_quote": "this looks like the Hamburg dental group from last summer, I should reuse that DATEV configuration approach. But that knowledge lives in her head."
+          }
+        ]
+      }
+    },
+    "composite": 3.716666666666667
+  },
+  "created_at": "2026-05-23T20:05:44.339Z"
+}

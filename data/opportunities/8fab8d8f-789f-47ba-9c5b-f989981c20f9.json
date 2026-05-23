@@ -1,0 +1,83 @@
+{
+  "id": "8fab8d8f-789f-47ba-9c5b-f989981c20f9",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "11585efc-8775-4a2c-a5ed-6a24b2165e57",
+  "problem_statement": "Approximately 25% of the time, ICs learn critical customer requirements (such as specific integration needs) for the first time on the kickoff call itself, because those details were captured in Gong calls but never surfaced to the IC. This directly correlates with an average go-live slip of 6.5 weeks.",
+  "ai_solution_concept": "An LLM could scan all Gong transcripts for a deal and flag customer-stated requirements, commitments, and open questions, ensuring nothing buried in a sales call is missed before the kickoff.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 4,
+            "rationale": "The problem fires on roughly 25% of kickoff calls, placing it squarely in the 'large slice of volume' anchor for a score of 4. This is a recurring, systemic issue rather than an edge case.",
+            "evidence_quote": "about 25% of the time I get on the kickoff call and the customer says something like, \"Right, so we specifically bought this because we need it to integrate with our existing Slack and our learning platform — what's the timeline for those?\" And I'm hearing it for the first time."
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Each new customer costs the IC 3–4 hours of manual artefact mining, and with a portfolio of 11 active implementations plus a 5-day SLA, this adds up to well over 50 agent-hours per week across the team, meeting the 'Major' anchor.",
+            "evidence_quote": "it takes me three to four hours per new customer to reconstruct what the AE already knew... Devon: And we have a 5-business-day SLA from Closed Won to kickoff call. Lena spends half a day mining Gong and Drive, then another half day building the kickoff agenda and the Rocketlane project plan, on top of her existing portfolio of 11 active implementations."
+          },
+          {
+            "name": "customer_friction",
+            "score": 5,
+            "rationale": "Unprepared kickoffs directly correlate with 6.5-week go-live slips and 2.1x higher first-year churn, tying the bottleneck directly to retention outcomes and meeting the 'Critical' anchor.",
+            "evidence_quote": "When the kickoff is rated \"unprepared\" by the customer in our post-call survey, the go-live slips on average 6.5 weeks... Year-one churn is 2.1x higher for projects that slipped past their original go-live by more than 30 days."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "The required inputs — Gong transcripts with auto-transcripts — already exist and are accessible. The data is scattered but present, making this closer to 'Straightforward' than 'Possible with effort'.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built... I can find it all, but it takes me three to four hours per new customer to reconstruct what the AE already knew."
+          },
+          {
+            "name": "llm_capability",
+            "score": 5,
+            "rationale": "Extracting customer-stated requirements, commitments, and open questions from sales call transcripts is a textbook LLM summarisation and extraction task — exactly the 'slam dunk' anchor. No complex reasoning or agentic behaviour is required.",
+            "evidence_quote": "The bottleneck is synthesis of artefacts the company already paid to produce. LLM-shaped problem."
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The handoff process, while imperfect, is well-documented and stable: Closed Won triggers a Zap to Rocketlane, IC is assigned, Slack fires. The trigger point for the LLM scan is clearly defined and unlikely to change frequently.",
+            "evidence_quote": "So the AE marks Closed Won. Our Zap pushes the account into Rocketlane and creates a project skeleton. An IC is assigned based on country, language, and capacity. Slack notification fires to the IC. That's the automated handoff."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 4,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The build is primarily integration work: connect to Gong's API, pull transcripts for a deal, run an extraction prompt, and surface results to the IC. This is a week or two of engineering, consistent with the 'Cheap' anchor.",
+            "evidence_quote": "An AE marks Closed Won. Our Zap pushes the account into Rocketlane and creates a project skeleton... Slack notification fires to the IC."
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "With 6–12 transcripts per deal and a finite number of Closed Won deals per month, LLM API spend is likely well under $200/month, fitting the 'Cheap' anchor. No evidence of unusually high volume is present.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 4,
+            "rationale": "The extraction task is stable — customer requirements and commitments are a consistent category — so prompt drift is low. Occasional updates as product or process evolves would suffice, consistent with the 'Cheap' anchor of occasional prompt tweaks.",
+            "evidence_quote": "It is *definitely* in a Gong call somewhere. The AE absolutely heard it. But it never made the brief."
+          }
+        ]
+      }
+    },
+    "composite": 4.266666666666667
+  },
+  "created_at": "2026-05-23T20:05:44.347Z"
+}

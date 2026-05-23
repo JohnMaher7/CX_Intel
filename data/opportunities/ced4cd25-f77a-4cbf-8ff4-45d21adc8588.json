@@ -1,0 +1,83 @@
+{
+  "id": "ced4cd25-f77a-4cbf-8ff4-45d21adc8588",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "4c83085a-0b32-40fe-aa54-96187397883e",
+  "problem_statement": "Agents frequently skip the free-text 'what I've tried' summary on the escalation form because they are rushed, causing Tier 2 to bounce roughly 32% of escalations back for more information and adding an extra customer round-trip while the SLA clock runs.",
+  "ai_solution_concept": "An LLM can auto-draft the escalation summary from the ticket thread and conversation history, ensuring Tier 2 receives complete context without relying on a rushed agent to write it manually.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "Escalations represent 14% of ~2,100 weekly tickets, so roughly 294 escalations per week, of which 32% bounce back — about 94 bounce-back events per week. This is a meaningful but not majority slice of total volume, fitting the 'material' anchor around 10–25% of a sub-flow.",
+            "evidence_quote": "About 14% escalate. Of those, integrations and payroll-rules questions go to a dedicated technical queue. The escalation form is six fields plus a free-text \"what I've tried\" summary."
+          },
+          {
+            "name": "hours_saved",
+            "score": 3,
+            "rationale": "Each bounce-back creates an extra round-trip with the customer and agent re-engagement, but the transcript does not quantify the time cost per bounce. With ~94 bounce-backs per week the aggregate is likely tens of agent-hours, fitting the 'material' anchor, but cannot be scored higher without explicit time data.",
+            "evidence_quote": "Roughly 32% of escalations come back with \"need more info.\" That's another round-trip with the customer, in their language, and our first-response SLA is already ticking."
+          },
+          {
+            "name": "customer_friction",
+            "score": 4,
+            "rationale": "The bounce-back adds a customer-facing round-trip while the SLA clock is already running, and payroll tickets carry a four-hour SLA. This is explicitly painful for customers and tied to SLA risk, fitting the 'major' anchor where customers describe the issue as painful and it appears in SLA conversations.",
+            "evidence_quote": "That's another round-trip with the customer, in their language, and our first-response SLA is already ticking."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4.666666666666667,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 5,
+            "rationale": "The full ticket thread and conversation history already live in Zendesk and are the direct input needed to draft the summary. No new instrumentation or data cleanup is required, fitting the 'slam dunk' anchor of clean structured inputs already in the system.",
+            "evidence_quote": "A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre."
+          },
+          {
+            "name": "llm_capability",
+            "score": 5,
+            "rationale": "Auto-drafting a free-text summary from an existing conversation thread is a textbook LLM summarisation task — one of the most reliable LLM capabilities. This fits the 'slam dunk' anchor of tasks LLMs do reliably with a simple prompt.",
+            "evidence_quote": "agents skip the summary because they're rushed, and Tier 2 bounces it back asking for repro steps."
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The escalation form with its six fields and free-text summary is a documented, stable process. The transcript describes it consistently without indicating recent changes, fitting the 'straightforward' anchor of a documented and stable process requiring mostly integration work.",
+            "evidence_quote": "The escalation form is six fields plus a free-text \"what I've tried\" summary."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 4,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The solution requires reading the Zendesk ticket thread, calling an LLM, and pre-populating a form field — a straightforward integration with no novel architecture. This fits the 'cheap' anchor of one to two weeks of engineering work.",
+            "evidence_quote": "The escalation form is six fields plus a free-text \"what I've tried\" summary. We have a problem where agents skip the summary because they're rushed"
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "With roughly 294 escalations per week (~15,000/year), each requiring a single summarisation call on a moderately sized ticket thread, API spend would be well under $200/month at current LLM pricing, fitting the 'cheap' anchor.",
+            "evidence_quote": "About 14% escalate. Of those, integrations and payroll-rules questions go to a dedicated technical queue."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 4,
+            "rationale": "A summarisation prompt over a ticket thread has minimal drift risk — the input format (Zendesk thread) and output goal (repro summary) are stable. Occasional prompt tweaks may be needed as the escalation form evolves, fitting the 'cheap' anchor of easy-to-justify maintenance.",
+            "evidence_quote": "Roughly 32% of escalations come back with \"need more info.\" That's another round-trip with the customer, in their language, and our first-response SLA is already ticking."
+          }
+        ]
+      }
+    },
+    "composite": 3.9333333333333336
+  },
+  "created_at": "2026-05-23T19:42:33.034Z"
+}

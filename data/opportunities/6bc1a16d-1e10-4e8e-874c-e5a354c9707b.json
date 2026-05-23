@@ -1,0 +1,83 @@
+{
+  "id": "6bc1a16d-1e10-4e8e-874c-e5a354c9707b",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "5ea77d62-a7d9-45ff-a400-7fad7388da1b",
+  "problem_statement": "Agents choose from 27 resolution codes (about 10 of which are never used) and write a minimal one-line internal note; the resulting data is never meaningfully analysed, leaving leadership unable to identify which issues are driving the most volume.",
+  "ai_solution_concept": "An LLM can extract structured themes and root-cause signals from ticket text and internal notes at scale, enabling automated trend reporting that the current resolution-code scheme fails to provide.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 4,
+            "rationale": "Resolution codes are applied to roughly 2,100 tickets per week, meaning the structured-theme extraction opportunity fires at very high volume. The data is never analysed, so the gap affects the full ticket corpus, placing this firmly in the 'large slice of volume' anchor.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1."
+          },
+          {
+            "name": "hours_saved",
+            "score": 3,
+            "rationale": "The transcript does not quantify analyst or leadership hours spent on manual trend analysis, but the gut-feel reporting and inability to answer product questions suggests recurring wasted effort. This is material but not precisely quantified, fitting the 'recurring source of escalations and complaints' anchor qualitatively.",
+            "evidence_quote": "We do almost nothing with that data downstream. Nobody could tell you which integration is generating the most pain this quarter."
+          },
+          {
+            "name": "customer_friction",
+            "score": 3,
+            "rationale": "The lack of trend analysis indirectly causes customer friction by leaving known pain points unaddressed (e.g., SCIM/Entra ID issues), but the transcript frames this primarily as a leadership/product visibility problem rather than a direct customer-facing pain point, fitting a material rather than major score.",
+            "evidence_quote": "when the Product team asks \"what's blowing up?\" we answer from gut feel. And right now my gut says SCIM provisioning with Entra ID, but I genuinely couldn't prove it."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "Ticket text and internal notes already exist in Zendesk in usable form. The resolution codes and one-line notes are sparse but the underlying ticket text is the primary input, which is already structured and accessible, making this straightforward.",
+            "evidence_quote": "Agent picks a resolution code — 27 codes, about ten of them never used — writes a one-line internal note, closes."
+          },
+          {
+            "name": "llm_capability",
+            "score": 5,
+            "rationale": "Extracting structured themes and root-cause signals from support ticket text is a textbook LLM strength — classification, extraction, and summarisation from free text. This is well within reliable LLM capability with a careful prompt and schema.",
+            "evidence_quote": "Roughly 45% of Tier 1 tickets are recurring patterns. Resetting employee passwords, re-sending mobile app invites, \"where do I download the SEPA file,\" \"how do I add a new absence type,\" \"the org chart isn't updating.\""
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The ticket intake process via Zendesk is described as stable and well-understood, with consistent categorisation and resolution steps. The downstream analysis gap is a missing layer on top of a stable process, not a process in flux.",
+            "evidence_quote": "A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre. Agent reads the subject, opens it, and tries to bucket it."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The build is primarily integration with Zendesk to pull ticket text and run LLM extraction in batch, plus a reporting layer. This is a week or two of engineering work — no new data infrastructure needed, fitting the 'cheap' anchor.",
+            "evidence_quote": "We do almost nothing with that data downstream. Nobody could tell you which integration is generating the most pain this quarter."
+          },
+          {
+            "name": "api_cost",
+            "score": 3,
+            "rationale": "At 2,100 tickets per week (~109k/year), running LLM extraction on each ticket will generate moderate API spend — likely in the hundreds of dollars per month range depending on ticket length and model choice, fitting the 'moderate' anchor.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 4,
+            "rationale": "Theme extraction prompts will need occasional updates as product areas evolve (e.g., new integrations, UI changes), but the core task is stable. Maintenance is light — occasional prompt tweaks — fitting the 'cheap' anchor.",
+            "evidence_quote": "Agent picks a resolution code — 27 codes, about ten of them never used — writes a one-line internal note, closes. We do almost nothing with that data downstream."
+          }
+        ]
+      }
+    },
+    "composite": 3.75
+  },
+  "created_at": "2026-05-23T19:42:33.034Z"
+}

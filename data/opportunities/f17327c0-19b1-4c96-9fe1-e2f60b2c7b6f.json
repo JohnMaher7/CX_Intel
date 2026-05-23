@@ -1,0 +1,83 @@
+{
+  "id": "f17327c0-19b1-4c96-9fe1-e2f60b2c7b6f",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "aa275029-7f60-42f2-8ec2-d583b3f10466",
+  "problem_statement": "Fin's deflection quality degrades for non-English languages because the underlying help-centre articles are uneven in translation quality and accuracy, generating a steady stream of escalations where customers report the article doesn't match what they see on screen.",
+  "ai_solution_concept": "An LLM can audit non-English help-centre articles against a source-of-truth English version and flag content gaps or outdated information, improving the article quality that Fin depends on.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 2.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "The transcript describes a 'steady drip of escalations' from Fin for non-English articles, and non-English languages represent roughly 10% of the 2,100 weekly tickets (French, Spanish, Italian, Dutch) plus the 60% German volume. This is a meaningful but not dominant slice of overall volume, fitting the 'material' anchor.",
+            "evidence_quote": "Fin deflects about 22% of would-be tickets — mostly password resets, mobile app onboarding, and \"where do I find my payslip\" employee questions. But Fin's answers are only as good as the help-centre articles, and those are uneven in non-English languages. We get a steady drip of escalations from Fin that say something like, \"the article doesn't match what I see on screen.\""
+          },
+          {
+            "name": "hours_saved",
+            "score": 2,
+            "rationale": "The transcript does not quantify how many agent-hours are consumed by Fin escalations due to poor article quality specifically. The 'steady drip' language suggests a minor but recurring cost, fitting the 'minor' anchor of a few agent-hours per week.",
+            "evidence_quote": "We get a steady drip of escalations from Fin that say something like, \"the article doesn't match what I see on screen.\""
+          },
+          {
+            "name": "customer_friction",
+            "score": 3,
+            "rationale": "Customers are explicitly reporting that articles don't match what they see on screen, indicating a recurring and documented source of complaints and escalations. This is a recurring source of escalations fitting the 'material' anchor, though not described as tied to churn or NPS.",
+            "evidence_quote": "the article doesn't match what I see on screen"
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "The English source-of-truth articles and non-English translations are already in the help centre and accessible. The task requires comparing existing text documents, which are clearly available in structured form, making this straightforward with minimal data prep.",
+            "evidence_quote": "Fin's answers are only as good as the help-centre articles, and those are uneven in non-English languages."
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Comparing a translated article against a source English article to flag content gaps or outdated information is a textbook LLM summarisation and extraction task. This is well within current LLM capability with a careful prompt, fitting the 'straightforward' anchor.",
+            "evidence_quote": "The Romance-language and Dutch macros are usually translated copies that haven't been updated in a year."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The help-centre article base exists and is in use, but the transcript reveals that content drifts (UI changes, stale macros) and there is no documented update process. The process is stable enough to build on but undocumented, fitting the 'possible with effort' anchor.",
+            "evidence_quote": "The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "Auditing articles by comparing translated text against an English source is largely an integration and prompt engineering task. It does not require complex multi-system agentic work, fitting the 'cheap' anchor of a week or two of engineering.",
+            "evidence_quote": "those are uneven in non-English languages"
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "The help-centre article corpus is finite and audits would run periodically rather than on every ticket. Token volume would be low, well under $200/month, fitting the 'cheap' anchor.",
+            "evidence_quote": "Fin deflects about 22% of would-be tickets — mostly password resets, mobile app onboarding, and \"where do I find my payslip\" employee questions."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "As the UI and product evolve, the English source articles will change and the audit prompts may need updating to reflect new terminology or structure. This is occasional maintenance rather than negligible, fitting the 'moderate' anchor.",
+            "evidence_quote": "The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      }
+    },
+    "composite": 3.216666666666667
+  },
+  "created_at": "2026-05-23T19:42:33.035Z"
+}

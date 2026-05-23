@@ -1,0 +1,83 @@
+{
+  "id": "452c37d6-95a5-482d-99e1-2992cd95a535",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "172232d0-0745-4b3a-91e9-f7e716a0e471",
+  "problem_statement": "Long, complex tickets — particularly German-language emails describing multiple problems — take five to six minutes just to triage before any actual customer help begins, consuming disproportionate agent capacity.",
+  "ai_solution_concept": "An LLM can summarise and decompose multi-issue multilingual tickets into structured problem statements, cutting triage time significantly.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 5,
+            "rationale": "2,100 tickets per week flow into Tier 1, with 60% in German — the exact language cited as the source of complex multi-issue tickets. This is well above the >50% majority threshold for a score of 5.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Messy tickets take five to six minutes each before any help begins, and with 2,100 tickets/week even a fraction of complex ones represents dozens to hundreds of agent-hours weekly. This aligns with the 'Major' anchor of 50+ agent-hours per week.",
+            "evidence_quote": "long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping."
+          },
+          {
+            "name": "customer_friction",
+            "score": 4,
+            "rationale": "Miscategorisation at 26% leads to wrong-team routing and delayed resolution, and the four-hour SLA on payroll tickets means triage delays directly cause SLA misses — a painful customer experience that appears in operational conversations.",
+            "evidence_quote": "Twenty-six percent of tickets were in the wrong category. The biggest miss is integrations — agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong,\" when it's actually that the DATEV export failed and no payslips were generated. Different team, different fix."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4.333333333333333,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "Tickets arrive through Zendesk with structured metadata (category, priority, customer plan, language) already in the system, and the raw email text is the direct input for summarisation — inputs are in usable form with no significant instrumentation needed.",
+            "evidence_quote": "A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre. Agent reads the subject, opens it, and tries to bucket it."
+          },
+          {
+            "name": "llm_capability",
+            "score": 5,
+            "rationale": "Summarising and decomposing a multilingual email into structured problem statements is a textbook LLM strength — extraction, classification, and summarisation — well within reliable current capability even for German-language input.",
+            "evidence_quote": "long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping."
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The nine-category taxonomy and triage workflow are clearly documented and stable enough that Sebastian could audit a sample and measure miscategorisation rates, indicating a well-understood, repeatable process suitable for AI integration.",
+            "evidence_quote": "We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\""
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The task is summarisation and structured decomposition of incoming ticket text — primarily a prompt engineering and Zendesk integration task with no novel ML work required, likely achievable in one to two weeks of engineering effort.",
+            "evidence_quote": "Agent reads the subject, opens it, and tries to bucket it. We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\""
+          },
+          {
+            "name": "api_cost",
+            "score": 3,
+            "rationale": "At 2,100 tickets per week (~109k/year), running each through an LLM summarisation call will generate meaningful but not extreme API spend — likely in the hundreds of dollars per month range, consistent with the 'Moderate' anchor.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "The nine-category schema is stable but the underlying ticket language and product UI evolve (e.g. menu renames), so occasional prompt updates will be needed as the product changes, consistent with moderate ongoing maintenance.",
+            "evidence_quote": "The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists."
+          }
+        ]
+      }
+    },
+    "composite": 4.133333333333333
+  },
+  "created_at": "2026-05-23T19:42:33.033Z"
+}

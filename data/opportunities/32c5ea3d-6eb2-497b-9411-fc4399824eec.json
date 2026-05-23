@@ -1,0 +1,83 @@
+{
+  "id": "32c5ea3d-6eb2-497b-9411-fc4399824eec",
+  "session_id": "a249d9b5-b0c2-4bcd-8c8f-974df2f6af8f",
+  "bottleneck_id": "2a233ed4-64e0-41da-a109-ae34cebf4854",
+  "problem_statement": "Confluence playbooks cover standard Personio setup steps but do not address the complex, scenario-specific configurations that occur in roughly 15% of implementations, leaving ICs without documented guidance for the cases that are hardest to get right.",
+  "ai_solution_concept": "An LLM with retrieval-augmented generation over completed project artefacts and Gong calls could surface contextually relevant past solutions and draft scenario-specific playbook additions, supplementing the generic Confluence content.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 2.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "The transcript states the complex scenario-specific configurations occur in roughly 15% of implementations, placing this squarely in the 10–25% 'material' range per the anchor language.",
+            "evidence_quote": "our Confluence has playbooks, but they're generic. \"How to set up Personio Payroll.\" Not, \"what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.\" Which is the actual situation about 15% of the time."
+          },
+          {
+            "name": "hours_saved",
+            "score": 2,
+            "rationale": "The transcript does not quantify hours spent on complex-case research specifically; the 3–4 hours cited covers general artefact synthesis, not playbook gap work. Sara reading every project from scratch suggests some recurring time cost, but the evidence is qualitative and limited, fitting a 'minor' anchor.",
+            "evidence_quote": "Sara, who just joined the team six weeks ago, has none of that. She's reading every project from scratch."
+          },
+          {
+            "name": "customer_friction",
+            "score": 3,
+            "rationale": "The transcript links unprepared kickoffs (partly caused by missing scenario-specific guidance) to go-live slips averaging 6.5 weeks and 2.1x first-year churn, indicating a recurring and material source of customer pain, consistent with the 'material' anchor referencing escalations and complaints.",
+            "evidence_quote": "Bad kickoffs correlate strongly with delayed go-lives. We measured it last quarter. When the kickoff is rated \"unprepared\" by the customer in our post-call survey, the go-live slips on average 6.5 weeks."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 3,
+            "rationale": "Completed project artefacts and Gong call transcripts exist and are accessible, but they are scattered across multiple systems (Gong, Drive, Notion, Rocketlane) and not in clean structured form, requiring meaningful retrieval and indexing work before RAG can be applied reliably.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup. There might be a Notion page from a discovery workshop."
+          },
+          {
+            "name": "llm_capability",
+            "score": 3,
+            "rationale": "Surfacing contextually relevant past solutions and drafting scenario-specific playbook additions is within LLM capability with careful prompting and RAG, but the nuanced, domain-specific nature of Personio configurations (e.g. DATEV, custom seniority calculations) means it is not a trivial classification or extraction task — it requires careful schema design and validation.",
+            "evidence_quote": "\"what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.\" Which is the actual situation about 15% of the time."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The implementation process appears stable enough (Rocketlane projects, Confluence playbooks, Gong recordings are established), but the playbook content itself is undocumented for complex cases, meaning the target output format and curation workflow would need to be defined before integration.",
+            "evidence_quote": "our Confluence has playbooks, but they're generic... Not, \"what to do when a 250-person DACH customer is migrating from Sage HR with a custom seniority calculation.\""
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 3,
+            "rationale": "Building a RAG pipeline over multiple heterogeneous sources (Gong, Drive, Notion, Rocketlane) and integrating it with Confluence for playbook drafting is several weeks of engineering work — moderate effort, not a multi-quarter platform build but more than a few days.",
+            "evidence_quote": "There's six to twelve Gong recordings per deal with auto-transcripts. There's the email thread in Outlook. There's the proposal in Google Drive, the technical scoping deck the Solutions Engineer built, sometimes a Loom from the SE walking through a custom DATEV setup."
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "The solution targets 15% of implementations and is triggered on-demand for playbook gap scenarios rather than processing every ticket or call in real time; expected LLM API volume is low, likely well under $200/month, fitting the 'cheap' anchor.",
+            "evidence_quote": "Which is the actual situation about 15% of the time."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "RAG over evolving project artefacts and Gong calls will require periodic re-indexing, prompt tuning as new configuration patterns emerge, and human review of drafted playbook additions to ensure accuracy — moderate ongoing maintenance from a named owner.",
+            "evidence_quote": "that knowledge lives in her head. Sara, who just joined the team six weeks ago, has none of that. She's reading every project from scratch."
+          }
+        ]
+      }
+    },
+    "composite": 2.916666666666667
+  },
+  "created_at": "2026-05-23T20:05:44.349Z"
+}

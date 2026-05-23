@@ -1,0 +1,83 @@
+{
+  "id": "d8c262b4-1d09-4d82-ba67-5b60a1861c76",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "afdb25ed-8dab-42f7-b921-fbd8a7fdb7c9",
+  "problem_statement": "The 'other' bucket (16% of volume) is inflated because agents fail to recognise contract template questions written in HR jargon, meaning tickets that belong in a known category go unsorted and sit idle.",
+  "ai_solution_concept": "An LLM can extract intent from domain-specific HR language across multiple languages and map it to the correct category, reducing 'other' bucket misclassification.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 3,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 3,
+            "rationale": "The 'other' bucket represents 16% of ~2,100 weekly tickets, meaning roughly 336 tickets per week are affected. This is a meaningful slice of volume (10–25% range) consistent with a Material score.",
+            "evidence_quote": "our \"other\" bucket is about 16% of volume. Half of those are actually contract template questions that the agents don't recognise"
+          },
+          {
+            "name": "hours_saved",
+            "score": 3,
+            "rationale": "With ~168 misclassified contract-template tickets per week sitting idle, and triage times ranging from 90 seconds to 5–6 minutes, the aggregate agent time wasted on re-routing and idle queue time is in the tens of agent-hours per week range, consistent with a Material score.",
+            "evidence_quote": "Clean ticket, 90 seconds. Messy one — long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping."
+          },
+          {
+            "name": "customer_friction",
+            "score": 3,
+            "rationale": "Tickets sitting idle in the 'other' bucket create delays and missed SLAs, which is a recurring source of customer frustration, though no explicit churn or NPS mention is made for this specific sub-problem.",
+            "evidence_quote": "tickets that belong in a known category go unsorted and sit idle"
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 4,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "Tickets already flow through Zendesk with subject lines and body text available. The nine category labels are well-defined and historical categorisation data exists, making this a straightforward classification task with inputs already in usable form.",
+            "evidence_quote": "A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre. Agent reads the subject, opens it, and tries to bucket it. We run nine categories"
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Extracting intent from domain-specific HR jargon (e.g., 'Arbeitsvertrag') and mapping it to one of nine known categories is a textbook LLM classification task. Multi-language support is well within current LLM capability.",
+            "evidence_quote": "the customer described them in HR-speak — \"the seniority field isn't pulling through to my Arbeitsvertrag.\""
+          },
+          {
+            "name": "process_stability",
+            "score": 4,
+            "rationale": "The nine-category taxonomy is documented and stable, and the Zendesk workflow is well-described and consistent. The categorisation process itself is not in flux, making integration straightforward.",
+            "evidence_quote": "We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\""
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 4,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "This is primarily an integration task — connecting Zendesk ticket intake to an LLM classifier with a fixed nine-category schema. No new data infrastructure is needed, pointing to a one-to-two week build.",
+            "evidence_quote": "A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre."
+          },
+          {
+            "name": "api_cost",
+            "score": 4,
+            "rationale": "At ~2,100 tickets per week (~9,000/month), classifying short-to-medium ticket texts with a lightweight LLM call per ticket would cost well under $200/month at current API pricing, consistent with the 'Cheap' anchor.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 4,
+            "rationale": "The nine-category taxonomy is stable and the classification prompt is unlikely to need frequent updates. Occasional prompt tweaks if new product areas emerge, but no dedicated ops function required.",
+            "evidence_quote": "We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\""
+          }
+        ]
+      }
+    },
+    "composite": 3.55
+  },
+  "created_at": "2026-05-23T19:42:33.032Z"
+}

@@ -1,0 +1,83 @@
+{
+  "id": "bf9969ac-062d-4460-9cad-723f113ad056",
+  "session_id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "bottleneck_id": "df162bf4-0780-4371-83dd-9cd83943be5a",
+  "problem_statement": "Agents spend up to five or six minutes manually categorising complex, multi-issue tickets, and 26% of tickets end up in the wrong category as a result. Misclassification — especially confusing DATEV integration errors with payroll issues — routes tickets to the wrong team and delays resolution.",
+  "ai_solution_concept": "An LLM classifier trained on ticket text can distinguish integration errors from payroll issues based on symptom language, reducing the 26% miscategorisation rate.",
+  "score": {
+    "rubric_version": "v1.0",
+    "dimensions": {
+      "impact": {
+        "dimension_score": 4.666666666666667,
+        "sub_scores": [
+          {
+            "name": "volume",
+            "score": 5,
+            "rationale": "2,100 tickets per week flow into Tier 1, and 26% are miscategorised — that is roughly 546 tickets per week affected by the classification problem, well above the >50% or majority-of-volume threshold for a score of 5 in absolute ticket terms, and the volume base itself is very large.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "hours_saved",
+            "score": 4,
+            "rationale": "Messy tickets — which include the complex multi-issue ones most likely to be miscategorised — take five to six minutes each. At 26% of 2,100 tickets that is hundreds of agent-minutes per week, placing this solidly in the 50+ agent-hours-per-week range for the major tier.",
+            "evidence_quote": "Messy one — long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping."
+          },
+          {
+            "name": "customer_friction",
+            "score": 5,
+            "rationale": "Misclassification routes tickets to the wrong team, delays resolution, and payroll tickets carry a four-hour SLA — meaning a misrouted payroll ticket directly causes SLA misses. This is directly tied to SLA breaches, matching the critical anchor.",
+            "evidence_quote": "anything tagged payroll has a four-hour SLA, not the standard two business days... The biggest miss is integrations — agents tag a DATEV sync error as 'payroll' because the customer wrote 'my payroll is wrong,' when it's actually that the DATEV export failed and no payslips were generated. Different team, different fix."
+          }
+        ]
+      },
+      "feasibility": {
+        "dimension_score": 3.6666666666666665,
+        "sub_scores": [
+          {
+            "name": "data_availability",
+            "score": 4,
+            "rationale": "Tickets arrive through Zendesk with subject lines and body text already in structured form, and Sebastian's audit of a sample last quarter confirms labelled historical data exists. The inputs are already in the system in usable form, matching the straightforward anchor.",
+            "evidence_quote": "I audited a sample last quarter. Twenty-six percent of tickets were in the wrong category. The biggest miss is integrations — agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong.\""
+          },
+          {
+            "name": "llm_capability",
+            "score": 4,
+            "rationale": "Distinguishing integration errors from payroll issues based on symptom language is a textbook classification task — the transcript even identifies the specific linguistic signal ('my payroll is wrong' vs DATEV export failure). This is well within LLM classification capability, matching the straightforward anchor.",
+            "evidence_quote": "agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong,\" when it's actually that the DATEV export failed and no payslips were generated. Different team, different fix."
+          },
+          {
+            "name": "process_stability",
+            "score": 3,
+            "rationale": "The nine-category taxonomy and Zendesk workflow appear stable, but the multilingual complexity (60% German, 30% English, plus four other languages) and the fact that macros drift and UI changes go unaddressed for months suggest the surrounding process is stable but not fully documented or instrumented, matching the possible-with-effort anchor.",
+            "evidence_quote": "Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch. We run three queues — DE, EN, \"other languages\" — and the other-languages queue is staffed by whoever happens to speak it that day."
+          }
+        ]
+      },
+      "cost": {
+        "dimension_score": 3.3333333333333335,
+        "sub_scores": [
+          {
+            "name": "dev_effort",
+            "score": 4,
+            "rationale": "The task is a classification prompt over existing Zendesk ticket text with a well-defined nine-category schema. Integration into Zendesk is standard. This is a week or two of engineering work, matching the cheap anchor.",
+            "evidence_quote": "We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\""
+          },
+          {
+            "name": "api_cost",
+            "score": 3,
+            "rationale": "At 2,100 tickets per week (~109,000 per year), each requiring a classification call on a moderately long multilingual text, API spend would likely land in the hundreds of dollars per month range — moderate, not negligible but not expensive.",
+            "evidence_quote": "About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch."
+          },
+          {
+            "name": "maintenance_burden",
+            "score": 3,
+            "rationale": "The multilingual nature of tickets (six languages) and the fact that category boundaries can be subtle (DATEV vs payroll confusion) means prompt tuning and periodic eval will be needed as language patterns and product UI evolve, placing this in the moderate maintenance tier rather than near-zero.",
+            "evidence_quote": "Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch... The biggest miss is integrations — agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong.\""
+          }
+        ]
+      }
+    },
+    "composite": 4.05
+  },
+  "created_at": "2026-05-23T19:42:33.028Z"
+}

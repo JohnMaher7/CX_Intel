@@ -1,0 +1,123 @@
+{
+  "id": "7c233673-4d38-4c3c-b18a-6dd2105f3377",
+  "title": "Tier 1 Support Triage — Discovery Session",
+  "source": "paste",
+  "ingested_at": "2026-05-23T19:41:51.474Z",
+  "raw_text": "**Jordan:** OK, walk us through what happens when a customer ticket lands in Tier 1. End to end.\n\n**Sebastian:** A ticket comes in through Zendesk — email, in-product help widget, or escalated out of Fin on the help-centre. Agent reads the subject, opens it, and tries to bucket it. We run nine categories: payroll, time & attendance, absence, contracts & documents, integrations, mobile app, GDPR / data subject requests, account & permissions, and \"other.\"\n\n**Priya:** And payroll is the one that keeps me up at night, because anything tagged payroll has a four-hour SLA, not the standard two business days.\n\n**Sebastian:** Right. After categorising, the agent picks priority — P1 to P4 — checks the customer record in our admin tool, sees the plan (Essential, Professional, Enterprise), how many employees they have, what country mix they're set up for, whether they're using Personio Payroll or a partner provider like DATEV. Then they look for related open tickets.\n\n**Jordan:** How long is that per ticket?\n\n**Sebastian:** Clean ticket, 90 seconds. Messy one — long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping.\n\n**Alex:** *(side note)* Triage time is the headline cost. Worth quantifying weekly volume and the language mix.\n\n**Priya:** About 2,100 tickets a week into Tier 1. Sixty percent German, thirty English, the rest split across French, Spanish, Italian, Dutch. We run three queues — DE, EN, \"other languages\" — and the other-languages queue is staffed by whoever happens to speak it that day.\n\n**Sebastian:** I audited a sample last quarter. Twenty-six percent of tickets were in the wrong category. The biggest miss is integrations — agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong,\" when it's actually that the DATEV export failed and no payslips were generated. Different team, different fix.\n\n**Priya:** And our \"other\" bucket is about 16% of volume. Half of those are actually contract template questions that the agents don't recognise because the customer described them in HR-speak — \"the seniority field isn't pulling through to my Arbeitsvertrag.\"\n\n**Jordan:** What about the response itself?\n\n**Sebastian:** Roughly 45% of Tier 1 tickets are recurring patterns. Resetting employee passwords, re-sending mobile app invites, \"where do I download the SEPA file,\" \"how do I add a new absence type,\" \"the org chart isn't updating.\" We have macros for most of them, in English and German. The Romance-language and Dutch macros are usually translated copies that haven't been updated in a year.\n\n**Priya:** Macros drift constantly. The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists.\n\n**Alex:** *(side note)* Two distinct opportunities here — auto-categorisation, and detection of stale macros. Probe further on Fin.\n\n**Jordan:** What does Intercom Fin handle on the help-centre today?\n\n**Sebastian:** Fin deflects about 22% of would-be tickets — mostly password resets, mobile app onboarding, and \"where do I find my payslip\" employee questions. But Fin's answers are only as good as the help-centre articles, and those are uneven in non-English languages. We get a steady drip of escalations from Fin that say something like, \"the article doesn't match what I see on screen.\"\n\n**Jordan:** What about escalations to Tier 2?\n\n**Sebastian:** About 14% escalate. Of those, integrations and payroll-rules questions go to a dedicated technical queue. The escalation form is six fields plus a free-text \"what I've tried\" summary. We have a problem where agents skip the summary because they're rushed, and Tier 2 bounces it back asking for repro steps.\n\n**Alex:** *(side note)* The bounce-back rate is a hidden tax — quantify it.\n\n**Priya:** Roughly 32% of escalations come back with \"need more info.\" That's another round-trip with the customer, in their language, and our first-response SLA is already ticking.\n\n**Jordan:** And resolution data?\n\n**Sebastian:** Agent picks a resolution code — 27 codes, about ten of them never used — writes a one-line internal note, closes. We do almost nothing with that data downstream. Nobody could tell you which integration is generating the most pain this quarter.\n\n**Priya:** Which means when the Product team asks \"what's blowing up?\" we answer from gut feel. And right now my gut says SCIM provisioning with Entra ID, but I genuinely couldn't prove it.",
+  "supplemental_context": "- Tier 1 team: 22 agents across Munich, Madrid, Dublin. Two leads. Average tenure 11 months.\n- Volume: ~2,100 tickets/week. Peaks on the first business day of the month (payroll runs) and Mondays. Language mix roughly 60% DE, 30% EN, 10% FR/ES/IT/NL combined.\n- Tools: Zendesk (ticketing), Intercom Fin (help-centre chat deflection), internal Personio admin tool, Confluence (macros + internal KB), Help Center CMS (customer-facing KB in six languages).\n- Existing automation: Fin deflects ~22% of help-centre interactions before they become tickets. Keyword-based auto-routing exists for password resets and SSO. No LLM-based categorisation or summarisation in the ticket pipeline.\n- Tier 2 split into Payroll Specialists, Integrations, Security & GDPR.\n- Customer base: ~14,000 companies, mostly DACH SMB/mid-market HR teams (10–2,000 employees). About 35% use Personio Payroll; the rest use DATEV, ADP, or local providers via export.\n- GDPR data subject access requests (DSARs) are ~3% of volume but disproportionately senior-agent time because of legal review.\n- No funded AI project in Support yet. Leadership has approved exploration time but wants concrete impact estimates.",
+  "workflow": {
+    "stages": [
+      {
+        "name": "Help-centre deflection via Fin",
+        "description": "Before a ticket is created, Intercom Fin attempts to resolve the customer's question using help-centre articles. Fin deflects approximately 22% of interactions, handling password resets, mobile app onboarding, and payslip queries; unresolved or mismatched conversations escalate into Zendesk as tickets.",
+        "actors": [
+          "Intercom Fin",
+          "Customer",
+          "Help Center CMS"
+        ]
+      },
+      {
+        "name": "Ticket intake and categorisation",
+        "description": "Incoming tickets from email, the in-product widget, or Fin escalations land in Zendesk and are read by a Tier 1 agent, who assigns one of nine categories (payroll, integrations, GDPR, etc.) and a P1–P4 priority. Payroll tickets carry a four-hour SLA; a known 26% miscategorisation rate—especially between payroll and integrations—adds downstream rework.",
+        "actors": [
+          "Tier 1 agent",
+          "Zendesk"
+        ]
+      },
+      {
+        "name": "Customer and account context lookup",
+        "description": "The agent checks the customer record in the internal Personio admin tool to establish plan tier, employee count, country configuration, and payroll provider (Personio Payroll, DATEV, ADP, etc.), and scans for related open tickets. This step takes 90 seconds on clean tickets and up to six minutes on complex or multilingual ones.",
+        "actors": [
+          "Tier 1 agent",
+          "Personio admin tool",
+          "Zendesk"
+        ]
+      },
+      {
+        "name": "First response using macros or bespoke reply",
+        "description": "For the roughly 45% of tickets matching recurring patterns, agents apply Confluence macros (available in English and German; Romance-language and Dutch versions are often outdated). Complex or unrecognised tickets receive a custom response. Macro drift—where UI changes have made instructions stale—causes agent and customer confusion.",
+        "actors": [
+          "Tier 1 agent",
+          "Zendesk",
+          "Confluence"
+        ]
+      },
+      {
+        "name": "Escalation to Tier 2",
+        "description": "Approximately 14% of tickets are escalated via a six-field form with a free-text 'what I've tried' summary to one of three Tier 2 queues (Payroll Specialists, Integrations, Security & GDPR). Agents frequently skip the summary under time pressure, causing Tier 2 to bounce roughly 32% of escalations back for more information, triggering an additional customer round-trip while the SLA clock runs.",
+        "actors": [
+          "Tier 1 agent",
+          "Tier 2 specialists",
+          "Zendesk"
+        ]
+      },
+      {
+        "name": "Resolution, coding, and closure",
+        "description": "The resolving agent selects one of 27 resolution codes (about 10 routinely unused), writes a one-line internal note, and closes the ticket. Resolution data is not analysed systematically, leaving product and support leadership reliant on gut feel when identifying recurring pain points or integration failures.",
+        "actors": [
+          "Tier 1 agent",
+          "Tier 2 specialist",
+          "Zendesk"
+        ]
+      }
+    ]
+  },
+  "bottlenecks": [
+    {
+      "id": "df162bf4-0780-4371-83dd-9cd83943be5a",
+      "stage": "Ticket Triage & Categorisation",
+      "description": "Agents spend up to five or six minutes manually categorising complex, multi-issue tickets, and 26% of tickets end up in the wrong category as a result. Misclassification — especially confusing DATEV integration errors with payroll issues — routes tickets to the wrong team and delays resolution.",
+      "evidence_quote": "I audited a sample last quarter. Twenty-six percent of tickets were in the wrong category. The biggest miss is integrations — agents tag a DATEV sync error as \"payroll\" because the customer wrote \"my payroll is wrong,\" when it's actually that the DATEV export failed and no payslips were generated. Different team, different fix.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM classifier trained on ticket text can distinguish integration errors from payroll issues based on symptom language, reducing the 26% miscategorisation rate."
+    },
+    {
+      "id": "afdb25ed-8dab-42f7-b921-fbd8a7fdb7c9",
+      "stage": "Ticket Triage & Categorisation",
+      "description": "The 'other' bucket (16% of volume) is inflated because agents fail to recognise contract template questions written in HR jargon, meaning tickets that belong in a known category go unsorted and sit idle.",
+      "evidence_quote": "Half of those are actually contract template questions that the agents don't recognise because the customer described them in HR-speak — \"the seniority field isn't pulling through to my Arbeitsvertrag.\"",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can extract intent from domain-specific HR language across multiple languages and map it to the correct category, reducing 'other' bucket misclassification."
+    },
+    {
+      "id": "172232d0-0745-4b3a-91e9-f7e716a0e471",
+      "stage": "Triage — Multi-issue & Multilingual Tickets",
+      "description": "Long, complex tickets — particularly German-language emails describing multiple problems — take five to six minutes just to triage before any actual customer help begins, consuming disproportionate agent capacity.",
+      "evidence_quote": "Messy one — long German email from an HR generalist who's described three problems in one message, with a screenshot of their payroll preview — easily five, six minutes before we start actually helping.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can summarise and decompose multi-issue multilingual tickets into structured problem statements, cutting triage time significantly."
+    },
+    {
+      "id": "708856a1-7295-42b5-af95-fa2ff86eee5f",
+      "stage": "Response — Macro Quality & Drift",
+      "description": "Macros for Romance-language and Dutch customers are outdated copies that haven't been refreshed in over a year, and at least one English/German macro still references a UI element that no longer exists, causing customer confusion.",
+      "evidence_quote": "Macros drift constantly. The Personio UI changed in November and we still have macros telling customers to click \"Mitarbeiterstammdaten\" in a menu that no longer exists.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can compare macro content against current help-centre articles or UI change logs to flag stale instructions for human review, enabling proactive macro hygiene."
+    },
+    {
+      "id": "4c83085a-0b32-40fe-aa54-96187397883e",
+      "stage": "Tier 2 Escalation — Incomplete Handoff",
+      "description": "Agents frequently skip the free-text 'what I've tried' summary on the escalation form because they are rushed, causing Tier 2 to bounce roughly 32% of escalations back for more information and adding an extra customer round-trip while the SLA clock runs.",
+      "evidence_quote": "Roughly 32% of escalations come back with \"need more info.\" That's another round-trip with the customer, in their language, and our first-response SLA is already ticking.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can auto-draft the escalation summary from the ticket thread and conversation history, ensuring Tier 2 receives complete context without relying on a rushed agent to write it manually."
+    },
+    {
+      "id": "5ea77d62-a7d9-45ff-a400-7fad7388da1b",
+      "stage": "Resolution Coding & Post-Close Analytics",
+      "description": "Agents choose from 27 resolution codes (about 10 of which are never used) and write a minimal one-line internal note; the resulting data is never meaningfully analysed, leaving leadership unable to identify which issues are driving the most volume.",
+      "evidence_quote": "We do almost nothing with that data downstream. Nobody could tell you which integration is generating the most pain this quarter.",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can extract structured themes and root-cause signals from ticket text and internal notes at scale, enabling automated trend reporting that the current resolution-code scheme fails to provide."
+    },
+    {
+      "id": "aa275029-7f60-42f2-8ec2-d583b3f10466",
+      "stage": "Help-Centre Deflection (Fin)",
+      "description": "Fin's deflection quality degrades for non-English languages because the underlying help-centre articles are uneven in translation quality and accuracy, generating a steady stream of escalations where customers report the article doesn't match what they see on screen.",
+      "evidence_quote": "Fin's answers are only as good as the help-centre articles, and those are uneven in non-English languages. We get a steady drip of escalations from Fin that say something like, \"the article doesn't match what I see on screen.\"",
+      "ai_solvable": true,
+      "ai_solvable_reasoning": "An LLM can audit non-English help-centre articles against a source-of-truth English version and flag content gaps or outdated information, improving the article quality that Fin depends on."
+    }
+  ]
+}

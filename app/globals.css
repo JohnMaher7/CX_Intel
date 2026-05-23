@@ -1,0 +1,189 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Atlas — Direction C palette.
+   Atlas tokens are the source of truth. The @theme inline block below
+   maps Tailwind utility names (bg-primary, text-muted-foreground, etc.)
+   onto these Atlas tokens, so shadcn primitives pick them up automatically. */
+
+:root {
+  --bg: oklch(0.975 0.006 220);
+  --panel: oklch(1 0 0);
+  --panel-2: oklch(0.965 0.008 220);
+  --ink: oklch(0.22 0.020 235);
+  --ink-soft: oklch(0.36 0.018 235);
+  --muted: oklch(0.50 0.014 235);
+  --muted-2: oklch(0.68 0.012 235);
+  --rule: oklch(0.90 0.010 230);
+  --rule-soft: oklch(0.94 0.008 230);
+  --accent: oklch(0.50 0.13 188);
+  --accent-ink: oklch(0.38 0.12 188);
+  --accent-soft: oklch(0.94 0.03 188);
+  --signal: oklch(0.50 0.15 268);
+  --signal-soft: oklch(0.95 0.03 268);
+  --score-hi: oklch(0.55 0.13 158);
+  --score-mid: oklch(0.65 0.13 75);
+  --score-lo: oklch(0.55 0.17 25);
+
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --color-card: var(--panel);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--panel);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--accent);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-secondary: var(--panel-2);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--panel-2);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--accent-soft);
+  --color-accent-foreground: var(--accent-ink);
+  --color-destructive: oklch(0.55 0.17 25);
+  --color-border: var(--rule);
+  --color-input: var(--rule);
+  --color-ring: var(--accent);
+
+  --color-sidebar: var(--panel-2);
+  --color-sidebar-foreground: var(--ink);
+  --color-sidebar-primary: var(--accent);
+  --color-sidebar-primary-foreground: oklch(1 0 0);
+  --color-sidebar-accent: var(--rule-soft);
+  --color-sidebar-accent-foreground: var(--ink);
+  --color-sidebar-border: var(--rule);
+  --color-sidebar-ring: var(--accent);
+
+  --font-sans: var(--font-geist-sans), -apple-system, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-editorial: var(--font-instrument-serif), Georgia, serif;
+  --font-heading: var(--font-geist-sans), system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+  }
+}
+
+/* ----- Atlas atoms ----- */
+
+.atlas-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+  height: 26px;
+  padding: 0 10px 0 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: var(--panel-2);
+  border: 1px solid var(--rule);
+}
+.atlas-score::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.atlas-score.hi { color: var(--score-hi); }
+.atlas-score.mid { color: var(--score-mid); }
+.atlas-score.lo { color: var(--score-lo); }
+
+.atlas-ai-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px 3px 7px;
+  border-radius: 999px;
+  color: var(--signal);
+  background: var(--signal-soft);
+  border: 1px solid color-mix(in oklch, var(--signal) 22%, transparent);
+  white-space: nowrap;
+}
+
+.atlas-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.atlas-dim {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 56px;
+}
+.atlas-dim-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+.atlas-dim-row .v {
+  color: var(--ink);
+}
+.atlas-dim-track {
+  height: 3px;
+  background: var(--rule-soft);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+.atlas-dim-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--accent);
+}
+
+.font-editorial {
+  font-family: var(--font-editorial);
+}
