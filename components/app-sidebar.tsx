@@ -3,8 +3,16 @@ import { Sparkles, Circle } from "lucide-react";
 import { listSessions } from "@/lib/storage/sessions";
 import { SidebarNav } from "@/components/sidebar-nav";
 
+async function safeListSessions() {
+  try {
+    return await listSessions();
+  } catch {
+    return [];
+  }
+}
+
 export async function AppSidebar() {
-  const sessions = await listSessions();
+  const sessions = await safeListSessions();
   const pinned = [...sessions]
     .sort((a, b) => b.ingested_at.localeCompare(a.ingested_at))
     .slice(0, 3);

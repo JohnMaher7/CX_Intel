@@ -1,24 +1,23 @@
-import path from "node:path";
-import { DATA_ROOT, listJson, tryReadJson, writeJson } from "./fs";
+import { listJson, tryReadJson, writeJson } from "./fs";
 import { DiscoverySessionSchema, type DiscoverySession } from "@/lib/types";
 
-const SESSIONS_DIR = path.join(DATA_ROOT, "sessions");
+const SESSIONS_PREFIX = "sessions";
 
-function sessionPath(id: string): string {
-  return path.join(SESSIONS_DIR, `${id}.json`);
+function sessionKey(id: string): string {
+  return `${SESSIONS_PREFIX}/${id}.json`;
 }
 
 export async function saveSession(session: DiscoverySession): Promise<void> {
   const parsed = DiscoverySessionSchema.parse(session);
-  await writeJson(sessionPath(parsed.id), parsed);
+  await writeJson(sessionKey(parsed.id), parsed);
 }
 
 export async function getSession(
   id: string,
 ): Promise<DiscoverySession | null> {
-  return tryReadJson(sessionPath(id), DiscoverySessionSchema);
+  return tryReadJson(sessionKey(id), DiscoverySessionSchema);
 }
 
 export async function listSessions(): Promise<DiscoverySession[]> {
-  return listJson(SESSIONS_DIR, DiscoverySessionSchema);
+  return listJson(SESSIONS_PREFIX, DiscoverySessionSchema);
 }

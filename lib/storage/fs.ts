@@ -1,80 +1,77 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { randomBytes } from "node:crypto";
+import { list, put } from "@vercel/blob";
 import type { ZodType } from "zod";
 
-export const DATA_ROOT = path.join(process.cwd(), "data");
+const BLOB_ACCESS = "public" as const;
 
-async function ensureDir(dir: string): Promise<void> {
-  await fs.mkdir(dir, { recursive: true });
-}
-
-/**
- * Atomic write: serialise to a sibling tempfile, then rename onto the target.
- * Rename is atomic on POSIX; on Windows-mounted filesystems it may fail with
- * EACCES under contention, in which case we fall back to a direct write.
- */
-export async function writeJson<T>(filePath: string, value: T): Promise<void> {
-  await ensureDir(path.dirname(filePath));
-  const data = JSON.stringify(value, null, 2);
-  const tmp = `${filePath}.${randomBytes(4).toString("hex")}.tmp`;
-  try {
-    await fs.writeFile(tmp, data, "utf8");
-    await fs.rename(tmp, filePath);
-  } catch {
-    await fs.writeFile(filePath, data, "utf8");
-    await fs.rm(tmp, { force: true });
+async function readBlobText(key: string): Promise<string | null> {
+  const { blobs } = await list({ prefix: key, limit: 1 });
+  const match = blobs.find((b) => b.pathname === key);
+  if (!match) return null;
+  const res = await fetch(match.url, { cache: "no-store" });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch blob ${key}: ${res.status}`);
   }
+  return res.text();
 }
 
-export async function readJson<T>(
-  filePath: string,
-  schema: ZodType<T>,
-): Promise<T> {
-  const raw = await fs.readFile(filePath, "utf8");
-  const parsed = JSON.parse(raw);
-  return schema.parse(parsed);
+export async function writeJson<T>(key: string, value: T): Promise<void> {
+  const data = JSON.stringify(value, null, 2);
+  await put(key, data, {
+    access: BLOB_ACCESS,
+    contentType: "application/json",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
+}
+
+export async function readJson<T>(key: string, schema: ZodType<T>): Promise<T> {
+  const text = await readBlobText(key);
+  if (text === null) {
+    throw new Error(`Blob not found: ${key}`);
+  }
+  return schema.parse(JSON.parse(text));
 }
 
 export async function tryReadJson<T>(
-  filePath: string,
+  key: string,
   schema: ZodType<T>,
 ): Promise<T | null> {
-  try {
-    return await readJson(filePath, schema);
-  } catch (err: unknown) {
-    if (
-      err &&
-      typeof err === "object" &&
-      "code" in err &&
-      (err as { code: string }).code === "ENOENT"
-    ) {
-      return null;
-    }
-    throw err;
-  }
+  const text = await readBlobText(key);
+  if (text === null) return null;
+  return schema.parse(JSON.parse(text));
 }
 
 export async function listJson<T>(
-  dir: string,
+  prefix: string,
   schema: ZodType<T>,
 ): Promise<T[]> {
-  let entries: string[];
-  try {
-    entries = await fs.readdir(dir);
-  } catch (err: unknown) {
-    if (
-      err &&
-      typeof err === "object" &&
-      "code" in err &&
-      (err as { code: string }).code === "ENOENT"
-    ) {
-      return [];
-    }
-    throw err;
-  }
-  const jsonFiles = entries.filter((f) => f.endsWith(".json"));
+  const normalised = prefix.endsWith("/") ? prefix : `${prefix}/`;
+  const { blobs } = await list({ prefix: normalised });
+  const jsonBlobs = blobs.filter((b) => b.pathname.endsWith(".json"));
   return Promise.all(
-    jsonFiles.map((f) => readJson(path.join(dir, f), schema)),
+    jsonBlobs.map(async (b) => {
+      const res = await fetch(b.url, { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`Failed to fetch blob ${b.pathname}: ${res.status}`);
+      }
+      return schema.parse(JSON.parse(await res.text()));
+    }),
   );
+}
+
+export async function writeText(
+  key: string,
+  content: string,
+  contentType = "text/plain",
+): Promise<void> {
+  await put(key, content, {
+    access: BLOB_ACCESS,
+    contentType,
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
+}
+
+export async function tryReadText(key: string): Promise<string | null> {
+  return readBlobText(key);
 }

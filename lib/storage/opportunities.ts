@@ -1,24 +1,23 @@
-import path from "node:path";
-import { DATA_ROOT, listJson, tryReadJson, writeJson } from "./fs";
+import { listJson, tryReadJson, writeJson } from "./fs";
 import { OpportunitySchema, type Opportunity } from "@/lib/types";
 
-const OPPORTUNITIES_DIR = path.join(DATA_ROOT, "opportunities");
+const OPPORTUNITIES_PREFIX = "opportunities";
 
-function opportunityPath(id: string): string {
-  return path.join(OPPORTUNITIES_DIR, `${id}.json`);
+function opportunityKey(id: string): string {
+  return `${OPPORTUNITIES_PREFIX}/${id}.json`;
 }
 
 export async function saveOpportunity(opp: Opportunity): Promise<void> {
   const parsed = OpportunitySchema.parse(opp);
-  await writeJson(opportunityPath(parsed.id), parsed);
+  await writeJson(opportunityKey(parsed.id), parsed);
 }
 
 export async function getOpportunity(
   id: string,
 ): Promise<Opportunity | null> {
-  return tryReadJson(opportunityPath(id), OpportunitySchema);
+  return tryReadJson(opportunityKey(id), OpportunitySchema);
 }
 
 export async function listOpportunities(): Promise<Opportunity[]> {
-  return listJson(OPPORTUNITIES_DIR, OpportunitySchema);
+  return listJson(OPPORTUNITIES_PREFIX, OpportunitySchema);
 }
